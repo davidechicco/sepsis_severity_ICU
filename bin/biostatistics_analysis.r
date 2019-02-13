@@ -3,13 +3,22 @@ options(stringsAsFactors = FALSE)
 
 source("./utils.r")
 
-
-patients_data <- read.csv(file="sepsis_severity_dataset_edited_2019-02-11.csv",head=TRUE,sep=",",stringsAsFactors=FALSE)
+fileName <- "../data/sepsis_severity_dataset_edited_2019-02-11.csv"
+patients_data <- read.csv(file=fileName,head=TRUE,sep=",",stringsAsFactors=FALSE)
+cat("fileName: ", fileName, "\n", sep="")
 
 patients_data_original <- patients_data
 
+# let's change some feature name
+names(patients_data)[names(patients_data) == "Chronic.Kidney.Disease.with.dialysis..CKD.with.dialysis."] <- "ChrKD.with.dialysis"
+names(patients_data)[names(patients_data) == "Chronic.Kidney.Disease.without.dialysis..CKD.w.o.dialysis."] <- "ChrKD.withOUT.dialysis"
+names(patients_data)[names(patients_data) == "Chronic.Obstructive.Pulmonary.Disease..COPD."] <- "ChrOPD"
+names(patients_data)[names(patients_data) == "ADDED.survival"] <- "survival"
+
+# sort the columns alphabetically
 patients_data <- patients_data[ , order(names(patients_data))]
 
+cat("\n// all patients //\n", sep="")
 for(i in 1:(ncol(patients_data))) { 
 
     cat("\n\n", colnames(patients_data)[i], ": \n", sep="") 
@@ -23,16 +32,17 @@ for(i in 1:(ncol(patients_data))) {
 
 targetYesValue <- 1
 targetNoValue <- 2
-targetName <- "Vasopressors"
+targetName <- "SOFA.score"
 
 targetIndex <- which(colnames(patients_data)==targetName)
 
-# Vasopressors patients YES
+# patients YES
 
 patients_data_target_yes <- (patients_data[patients_data[, targetIndex]==targetYesValue,])
 patients_data_target_yes <- patients_data_target_yes[ , order(names(patients_data_target_yes))]
 
 
+cat("\n// target YES patients //\n", sep="")
 for(i in 1:(ncol(patients_data_target_yes))) { 
 
     cat("\n\n", colnames(patients_data_target_yes)[i], ": \n", sep=""); 
@@ -42,11 +52,12 @@ for(i in 1:(ncol(patients_data_target_yes))) {
 
 }
 
-# Vasopressors patients NO
+# patients NO
 
 patients_data_target_no <- (patients_data[patients_data[, targetIndex]==targetNoValue,])
 patients_data_target_no<- patients_data_target_no[ , order(names(patients_data_target_no))]
 
+cat("\n// target NO patients //\n", sep="")
 for(i in 1:(ncol(patients_data_target_no))) { 
 
     cat("\n\n", colnames(patients_data_target_no)[i], ": \n", sep=""); 
@@ -57,6 +68,8 @@ for(i in 1:(ncol(patients_data_target_no))) {
 
 # All patients: p-value, t-value, and PCC
 
+cat("\n// all patients correlations //\n\n", sep="")
+cat(targetName, ";\t abs(t); \t p-value; \t PCC; \t conf_int;\n\n", sep="")
 for(i in 1:(ncol(patients_data))) { 
 
     # cat("\n\ncorrelation between (target) ", colnames(patients_data)[targetIndex], " and ",  colnames(patients_data)[i], ": \n", sep="") 
@@ -64,14 +77,14 @@ for(i in 1:(ncol(patients_data))) {
     # cat("\n", colnames(patients_data)[i], " [versus]  ", colnames(patients_data)[targetIndex], "(target) : correlation\n", sep="")
     
     thisTtest <- t.test(patients_data[,i], patients_data[,targetIndex])
-    tValue <- (thisTtest$statistic)[[1]]
+    tValue <- abs((thisTtest$statistic)[[1]])
     pValue <- (thisTtest$p.value)
     thisPCC <- cor(patients_data[,i], patients_data[,targetIndex], method=c("pearson"))
     conf_int_start <- dec_two((thisTtest$conf.int)[1])
     conf_int_end <- dec_two((thisTtest$conf.int)[2])
     
-    cat("t \t\t p-value \t PCC \t conf_int\n", sep="")
-    cat(dec_two(tValue), "\t\t", pValue, "\t\t", dec_two(thisPCC), "\t", conf_int_start, "\t", conf_int_end, "\n\n", sep="")
+    # cat(colnames(patients_data)[i], "\t\t abs(t) \t p-value \t PCC \t conf_int\n", sep="")
+    cat(colnames(patients_data)[i], ";\t", dec_two(tValue), ";\t", pValue, ";\t", dec_two(thisPCC), ";\t", conf_int_start, ";\t", conf_int_end, ";\n", sep="")
     
     # cat("t = ", dec_two(tValue), "\n", sep="")
     # cat("p-value = ", dec_two(pValue), "\n", sep="")

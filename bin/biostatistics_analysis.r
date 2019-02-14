@@ -28,41 +28,54 @@ for(i in 1:(ncol(patients_data))) {
 }
 
 
-# Vaspopressors as target
+# # Vaspopressors as target
+# targetYesValue <- 1
+# targetNoValue <- 2
+# targetName <- "Vasopressors"
 
+# # survival as target
+# targetYesValue <- NULL
+# targetNoValue <- NULL
+# targetName <- "SOFA.score"
+
+# survival as target
 targetYesValue <- 1
-targetNoValue <- 2
-targetName <- "SOFA.score"
+targetNoValue <- 0
+targetName <- "survival"
 
 targetIndex <- which(colnames(patients_data)==targetName)
 
-# patients YES
+if (targetName=="survival" || targetName=="Vasopressors") {
 
-patients_data_target_yes <- (patients_data[patients_data[, targetIndex]==targetYesValue,])
-patients_data_target_yes <- patients_data_target_yes[ , order(names(patients_data_target_yes))]
+    # patients YES
+
+    patients_data_target_yes <- (patients_data[patients_data[, targetIndex]==targetYesValue,])
+    patients_data_target_yes <- patients_data_target_yes[ , order(names(patients_data_target_yes))]
 
 
-cat("\n// target YES patients //\n", sep="")
-for(i in 1:(ncol(patients_data_target_yes))) { 
+    cat("\n// target YES patients //\n", sep="")
+    for(i in 1:(ncol(patients_data_target_yes))) { 
 
-    cat("\n\n", colnames(patients_data_target_yes)[i], ": \n", sep=""); 
-    print(table(patients_data_target_yes[,i])) 
-    print(summary(patients_data_target_yes[,i]))    
-    
+        cat("\n\n", colnames(patients_data_target_yes)[i], ": \n", sep=""); 
+        print(table(patients_data_target_yes[,i])) 
+        print(summary(patients_data_target_yes[,i]))    
+        
 
-}
+    }
 
-# patients NO
+    # patients NO
 
-patients_data_target_no <- (patients_data[patients_data[, targetIndex]==targetNoValue,])
-patients_data_target_no<- patients_data_target_no[ , order(names(patients_data_target_no))]
+    patients_data_target_no <- (patients_data[patients_data[, targetIndex]==targetNoValue,])
+    patients_data_target_no<- patients_data_target_no[ , order(names(patients_data_target_no))]
 
-cat("\n// target NO patients //\n", sep="")
-for(i in 1:(ncol(patients_data_target_no))) { 
+    cat("\n// target NO patients //\n", sep="")
+    for(i in 1:(ncol(patients_data_target_no))) { 
 
-    cat("\n\n", colnames(patients_data_target_no)[i], ": \n", sep=""); 
-    print(table(patients_data_target_no[,i])) 
-    print(summary(patients_data_target_no[,i])) 
+        cat("\n\n", colnames(patients_data_target_no)[i], ": \n", sep=""); 
+        print(table(patients_data_target_no[,i])) 
+        print(summary(patients_data_target_no[,i])) 
+
+    }
 
 }
 

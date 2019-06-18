@@ -7,4 +7,4 @@ Iram Yunus, Anum Fasih, and Yanzhi Wang, ["The use of procalcitonin in the deter
 ## Script instructions
 On Linux Ubuntu: 
 
-`/usr/bin/Rscript retrieve_genes.r`
+`/usr/bin/Rscript main1_v6.R`

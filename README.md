@@ -11,4 +11,4 @@ On Linux Ubuntu:
 
 
 ## Contacts
-For any information, please contact Davide Chicco or Luca Oneto at davidechicco@davidechicco
+For any information, please contact Davide Chicco or Luca Oneto at davidechicco@davidechicco.it or luca.oneto@gmail.com

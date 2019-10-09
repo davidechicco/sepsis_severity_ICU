@@ -1,3 +1,26 @@
+
+
+# I nomi sono classici in ML, standard...
+# YF = Y Forward (predetta)
+# YT = Y Test
+# D = Dataset
+# v = indici delle colonne nominali del dataset
+# ix = indice delle colonne di imnput del dataset
+# iy = indice delle colonne di output del dataset
+# IM1 IM2 IM3 = matrici delle importanze per calcoloare la cosa che ti ho spiegato nelle mail precedenti
+# mc = numero di MonteCarlo (è spiegato nel file...)
+# k = vettore temporaneo di indirizzi per creare dati di train e test
+# n = numero di campioni nel dataset
+# il = vettore temporaneo di indirizzi del learning (chiamato volgarmente training) set
+# it = vettore temporaneo di indirizzi del test set
+# XL = matrice di imput del learning set
+# YL = matrice di outpur del learning set
+# XT = matrice di imput del test set
+# YT = matrice di outpur del test set
+# M = modello
+# YFR, YTR = ho dimenticato di cacellarle. Puoi cancellare riga 58, 104, 105
+
+
 # Enviroment
 setwd(".")
 rm(list=ls())
@@ -38,7 +61,7 @@ MetricsRegr <- function(YF,YT){
 }
 
 # Results
-D <- read.csv('sepsis_severity_dataset_edited_2019-03-22.csv', header=TRUE);
+D <- read.csv('../data/sepsis_severity_dataset_edited_2019-03-22.csv', header=TRUE);
 if (method == "RF") {
   v = c(2,4:13,20,22,25:29)
 } else {
